@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useCallback } from 'react';
+import React, { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
 import { Product } from '../types';
 
 interface CartItem extends Product {
@@ -21,18 +21,24 @@ interface CartContextType {
 const CartContext = createContext<CartContextType>({
   items: [],
   totalAmount: 0,
-  addItem: () => {},
-  removeItem: () => {},
-  updateQuantity: () => {},
+  addItem: () => { },
+  removeItem: () => { },
+  updateQuantity: () => { },
 });
 
+const STORAGE_KEY = 'cart';
+
 type CartAction =
-  | { type: 'ADD_ITEM'; item: Product }
-  | { type: 'REMOVE_ITEM'; id: string }
-  | { type: 'UPDATE_QUANTITY'; id: string; delta: number };
+  | { type: 'ADD_ITEM'; item: Product; }
+  | { type: 'REMOVE_ITEM'; id: string; }
+  | { type: 'UPDATE_QUANTITY'; id: string; delta: number; }
+  | { type: 'SET_CART'; payload: CartState; };
 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
   switch (action.type) {
+    case 'SET_CART':
+      return action.payload;
+
     case 'ADD_ITEM': {
       const existingCartItemIndex = state.items.findIndex(
         (item) => item.id === action.item.id
@@ -64,15 +70,12 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 
       return {
         items: state.items.filter((item) => item.id !== action.id),
-        totalAmount: state.totalAmount - (existingItem.price * existingItem.quantity),
+        totalAmount: state.totalAmount - existingItem.price * existingItem.quantity,
       };
     }
 
     case 'UPDATE_QUANTITY': {
-      const existingItemIndex = state.items.findIndex(
-        (item) => item.id === action.id
-      );
-
+      const existingItemIndex = state.items.findIndex((item) => item.id === action.id);
       if (existingItemIndex === -1) return state;
 
       const updatedItems = [...state.items];
@@ -82,7 +85,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
       if (newQuantity <= 0) {
         return {
           items: updatedItems.filter((item) => item.id !== action.id),
-          totalAmount: state.totalAmount - (item.price * item.quantity),
+          totalAmount: state.totalAmount - item.price * item.quantity,
         };
       }
 
@@ -93,7 +96,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 
       return {
         items: updatedItems,
-        totalAmount: state.totalAmount + (item.price * action.delta),
+        totalAmount: state.totalAmount + item.price * action.delta,
       };
     }
 
@@ -102,11 +105,25 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
   }
 };
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
   const [cartState, dispatch] = useReducer(cartReducer, {
     items: [],
     totalAmount: 0,
   });
+
+  // Initial load from localStorage
+  useEffect(() => {
+    const savedCart = localStorage.getItem(STORAGE_KEY);
+    if (savedCart) {
+      const parsed = JSON.parse(savedCart);
+      dispatch({ type: 'SET_CART', payload: parsed });
+    }
+  }, []);
+
+  // Save to localStorage on change
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cartState));
+  }, [cartState]);
 
   const addItem = useCallback((item: Product) => {
     dispatch({ type: 'ADD_ITEM', item });

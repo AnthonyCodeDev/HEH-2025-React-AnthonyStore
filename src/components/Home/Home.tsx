@@ -4,6 +4,7 @@ import { Star, MessageSquare } from 'lucide-react';
 import Products from '../Product/Products';
 import { useCart } from '../../context/CartContext';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import '../../styles/Home.css';
 
 interface Product {
@@ -55,12 +56,22 @@ const Home: React.FC = () => {
           <Row className="align-items-center">
             <Col lg={6} className="py-5">
               <h1 className="hero-title">
-                {featuredProduct ? featuredProduct.name : 'Chargement...'}
-                <br />
-                {featuredProduct && (
-                  <span className="hero-highlight">À partir de seulement {featuredProduct.price}€</span>
+                {featuredProduct ? (
+                  <Link
+                    to={`/product/${featuredProduct._id}`}
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    {featuredProduct.name}
+                    <br />
+                    <span className="hero-highlight">
+                      À partir de seulement {featuredProduct.price}€
+                    </span>
+                  </Link>
+                ) : (
+                  'Chargement...'
                 )}
               </h1>
+
               <p className="hero-description">
                 {featuredProduct
                   ? featuredProduct.description || 'Un produit exceptionnel à ne pas manquer.'
@@ -74,12 +85,16 @@ const Home: React.FC = () => {
             </Col>
             <Col lg={6} className="py-5">
               {featuredProduct && (
-                <img
-                  src={featuredProduct.mainImage}
-                  alt={featuredProduct.name}
-                  className="hero-image"
-                />
+                <Link to={`/product/${featuredProduct._id}`}>
+                  <img
+                    src={featuredProduct.mainImage}
+                    alt={featuredProduct.name}
+                    className="hero-image"
+                    style={{ cursor: 'pointer' }}
+                  />
+                </Link>
               )}
+
             </Col>
           </Row>
         </Container>

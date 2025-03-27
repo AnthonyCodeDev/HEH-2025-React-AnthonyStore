@@ -21,7 +21,6 @@ const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Map des routes vers les IDs de catégorie
   const categoryMap: Record<string, string> = {
     mac: '67e51158a53000037de20c2b',
     iphone: '67e5116aa53000037de20c2e',
@@ -29,57 +28,14 @@ const Products: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-
-      try {
-        const params: any = {
-          headers: {
-            'Accept-Language': 'fr_FR'
-          }
-        };
-
-        // S’il y a un ID de catégorie associé à l’URL, on l’ajoute en filter
-        const categoryId = categoryMap[path];
-        const queryParams: any = {};
-        if (categoryId) {
-          queryParams.filter = `category:${categoryId}`;
-        }
-
-        const response = await axios.get('http://localhost:3000/api/product', {
-          params: queryParams,
-          headers: {
-            'Accept-Language': 'fr_FR'
-          }
-        });
-
-        const allProducts: Product[] = response.data.products || response.data;
-        setProducts(allProducts);
-      } catch (error) {
-        console.error("Erreur lors du chargement des produits :", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [path]);
-
-  useEffect(() => {
     const controller = new AbortController();
-    let isMounted = true; // 👈 vérifie que le composant est encore monté
+    let isMounted = true;
 
     const fetchProducts = async () => {
       setLoading(true);
-      setProducts([]); // 👈 évite affichage de vieux produits
+      setProducts([]); // évite l'affichage de l'ancien contenu
 
       try {
-        const categoryMap: Record<string, string> = {
-          mac: '67e51158a53000037de20c2b',
-          iphone: '67e5116aa53000037de20c2e',
-          ipad: '67e5118da53000037de20c31',
-        };
-
         const categoryId = categoryMap[path];
 
         const response = await axios.get('http://localhost:3000/api/product', {
@@ -114,8 +70,6 @@ const Products: React.FC = () => {
       isMounted = false;
     };
   }, [path]);
-
-
 
   if (loading) return <p className="text-center py-5">Chargement des produits...</p>;
 

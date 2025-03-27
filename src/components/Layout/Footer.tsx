@@ -57,7 +57,7 @@ const Footer: React.FC = () => {
         <Row className="align-items-center mt-3">
           <Col md={6}>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-              © 2024 Anthony Store. Tous droits réservés.
+              © 2025 Anthony Store. Tous droits réservés.
             </p>
           </Col>
           <Col md={6} className="d-flex justify-content-md-end align-items-center gap-2">
