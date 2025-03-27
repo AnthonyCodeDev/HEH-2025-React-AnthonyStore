@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-bg: #ffffff;
+  --secondary-bg: #f6f6f6;
+  --text-primary: #1d1d1f;
+  --text-secondary: #86868b;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--primary-bg);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+.product-card {
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+}
+
+.navbar-custom {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.btn-custom {
+  background: var(--text-primary);
+  border: none;
+  padding: 0.5rem 2rem;
+  border-radius: 980px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-custom:hover {
+  background: #2d2d2f;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: var(--text-primary);
+}

@@ -1,0 +1,18 @@
+:root {
+  --primary-bg: #ffffff;
+  --secondary-bg: #f5f5f7;
+  --text-primary: #1d1d1f;
+  --text-secondary: #86868b;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--primary-bg);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: var(--text-primary);
+}

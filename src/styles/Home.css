@@ -1,0 +1,99 @@
+.hero-section {
+  background-color: var(--secondary-bg);
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  margin-top: 76px;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.hero-highlight {
+  color: #323232;
+  font-size: 1.2rem;
+}
+
+.hero-description {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+  border-radius: 24px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+}
+
+.products-section {
+  padding: 5rem 0;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.section-description {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.reviews-section {
+  background-color: var(--secondary-bg);
+  padding: 5rem 0;
+}
+
+.review-card {
+  background-color: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  height: 100%;
+}
+
+.review-comment {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.review-name {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.review-product {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.contact-section {
+  padding: 5rem 0;
+}
+
+.contact-form .form-control {
+  background-color: var(--secondary-bg);
+  border: none;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.contact-form .form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.contact-form textarea {
+  resize: none;
+}

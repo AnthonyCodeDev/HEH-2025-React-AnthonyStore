@@ -1,0 +1,38 @@
+.product-grid {
+  padding: 5rem 0 4rem 0;
+}
+
+.product-card {
+  transition: all 0.3s ease;
+  background-color: var(--secondary-bg);
+  border-radius: 20px;
+  border: none;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+}
+
+.product-image {
+  height: 300px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.product-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.product-description {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.product-price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}

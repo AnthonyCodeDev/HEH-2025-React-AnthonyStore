@@ -1,0 +1,36 @@
+.cart-container {
+  margin-top: 6rem;
+  padding: 2rem 0;
+}
+
+.cart-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.cart-item {
+  background-color: var(--secondary-bg);
+  border: none;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cart-item-image {
+  object-fit: cover;
+  height: 120px;
+  width: 100%;
+  border-radius: 0.5rem;
+}
+
+.cart-summary {
+  background-color: var(--secondary-bg);
+  border: none;
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+.cart-total {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
