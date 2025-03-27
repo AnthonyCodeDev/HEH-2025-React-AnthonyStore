@@ -60,17 +60,18 @@ const Footer: React.FC = () => {
               © 2024 Anthony Store. Tous droits réservés.
             </p>
           </Col>
-          <Col md={6} className="text-md-end">
-            <a href="#" className="text-decoration-none me-2" style={{ color: 'var(--text-primary)' }}>
+          <Col md={6} className="d-flex justify-content-md-end align-items-center gap-2">
+            <a href="#" className="text-decoration-none" style={{ color: 'var(--text-primary)' }}>
               <Github size={20} strokeWidth={1.5} />
             </a>
-            <a href="#" className="text-decoration-none me-2" style={{ color: 'var(--text-primary)' }}>
+            <a href="#" className="text-decoration-none" style={{ color: 'var(--text-primary)' }}>
               <Twitter size={20} strokeWidth={1.5} />
             </a>
             <a href="#" className="text-decoration-none" style={{ color: 'var(--text-primary)' }}>
               <Linkedin size={20} strokeWidth={1.5} />
             </a>
           </Col>
+
         </Row>
       </Container>
     </footer>

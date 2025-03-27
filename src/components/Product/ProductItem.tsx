@@ -13,31 +13,31 @@ const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
     <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <Card className="product-card border-0 h-100" style={{ backgroundColor: 'var(--secondary-bg)', borderRadius: '20px' }}>
         <div className="p-4">
-          <Card.Img 
-            variant="top" 
-            src={product.image} 
+          <Card.Img
+            variant="top"
+            src={product.mainImage}
             alt={product.name}
-            style={{ 
-              height: '300px', 
-              objectFit: 'cover',
+            style={{
+              height: '300px',
+              objectFit: 'contain',
               borderRadius: '16px'
             }}
           />
         </div>
         <Card.Body className="d-flex flex-column px-4 pb-4">
           <div className="mb-auto">
-            <Card.Title 
-              style={{ 
-                fontSize: '1.5rem', 
+            <Card.Title
+              style={{
+                fontSize: '1.5rem',
                 fontWeight: 600,
                 marginBottom: '0.5rem'
               }}
             >
               {product.name}
             </Card.Title>
-            <Card.Text 
+            <Card.Text
               className="mb-3"
-              style={{ 
+              style={{
                 color: 'var(--text-secondary)',
                 fontSize: '0.95rem',
                 lineHeight: '1.5'

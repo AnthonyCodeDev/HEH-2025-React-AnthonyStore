@@ -38,10 +38,10 @@ const Cart: React.FC = () => {
                 <Row className="align-items-center">
                   <Col sm={3}>
                     <img
-                      src={item.image}
+                      src={item.mainImage}
                       alt={item.name}
                       className="img-fluid rounded-3"
-                      style={{ objectFit: 'cover', height: '120px', width: '100%' }}
+                      style={{ objectFit: 'contain', height: '120px', width: '100%' }}
                     />
                   </Col>
                   <Col sm={5}>

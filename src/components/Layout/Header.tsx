@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import HeaderCartButton from './HeaderCartButton';
 import { ShoppingBag, LogIn } from 'lucide-react';
@@ -6,6 +6,21 @@ import { Link } from 'react-router-dom';
 import '../../styles/Header.css';
 
 const Header: React.FC = () => {
+  const [user, setUser] = useState<{ name: string; } | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error("Erreur parsing user", e);
+        setUser(null);
+      }
+    }
+  }, []);
+
+
   return (
     <Navbar className="navbar-custom py-3" fixed="top" expand="lg">
       <Container>
@@ -27,19 +42,49 @@ const Header: React.FC = () => {
           </Nav>
           <div className="d-flex align-items-center gap-3">
             <HeaderCartButton />
-            <Link to="/login" style={{ textDecoration: 'none' }}>
-              <Button
-                className="btn-custom d-flex align-items-center"
-                style={{
-                  padding: '0.5rem 1rem',
-                  fontSize: '0.9rem'
-                }}
-              >
-                <LogIn size={18} strokeWidth={1.5} className="me-2" />
-                Connexion
-              </Button>
-            </Link>
+            {user ? (
+              <>
+                <span
+                  style={{ fontWeight: 500, fontSize: '0.95rem', color: '#fff' }}
+                  className="btn-custom"
+                >
+                  Bonjour,&nbsp;
+                  {user.name.length > 16
+                    ? `${user.name.substring(0, 16)}...`
+                    : user.name}
+                </span>
+                <Button
+                  className="btn-custom"
+                  style={{
+                    padding: '0.5rem 1rem',
+                    fontSize: '0.9rem'
+                  }}
+                  onClick={() => {
+                    localStorage.clear();
+                    setUser(null);
+                    window.location.href = '/';
+                  }}
+                >
+                  Se déconnecter
+                </Button>
+              </>
+            ) : (
+              <Link to="/login" style={{ textDecoration: 'none' }}>
+                <Button
+                  className="btn-custom d-flex align-items-center"
+                  style={{
+                    padding: '0.5rem 1rem',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  <LogIn size={18} strokeWidth={1.5} className="me-2" />
+                  Connexion
+                </Button>
+              </Link>
+            )}
           </div>
+
+
         </Navbar.Collapse>
       </Container>
     </Navbar>

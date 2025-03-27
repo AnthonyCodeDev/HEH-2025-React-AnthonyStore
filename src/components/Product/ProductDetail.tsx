@@ -1,36 +1,63 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
-import { DUMMY_PRODUCTS } from '../../data/dummy-products';
 import { useCart } from '../../context/CartContext';
 import { Truck, Shield, ChevronLeft, ChevronRight } from 'lucide-react';
+import axios from 'axios';
+
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  description: string;
+  image: string;
+  images?: string[]; // si ton modèle contient un tableau d’images secondaires
+}
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string; }>();
   const navigate = useNavigate();
   const { addItem } = useCart();
+  const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [productImages, setProductImages] = useState<string[]>([]);
 
-  const product = DUMMY_PRODUCTS.find(p => p.id === id);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/product/${id}`, {
+          headers: {
+            'Accept-Language': 'fr_FR'
+          }
+        });
+        const data = response.data.product;
+        setProduct(data);
 
-  if (!product) {
-    navigate('/');
-    return null;
-  }
+        // Si le produit a un champ `images`, on les combine avec l’image principale
+        const images = [data.mainImage];
+        if (data.images && Array.isArray(data.images)) {
+          images.push(...data.images);
+        }
+        setProductImages(images);
+      } catch (err) {
+        console.error("Produit non trouvé ❌", err);
+        navigate('/');
+      }
+    };
 
-  // Les produits (simulés) mais après via API
-  const productImages = [
-    product.image,
-    'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80',
-    'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80'
-  ];
+    if (id) fetchProduct();
+  }, [id, navigate]);
 
   const handleAddToCart = () => {
-    for (let i = 0; i < quantity; i++) {
-      addItem(product);
+    if (product) {
+      for (let i = 0; i < quantity; i++) {
+        addItem(product);
+      }
     }
   };
+
+  if (!product) return null;
 
   return (
     <Container className="py-5" style={{ marginTop: '6rem' }}>
@@ -44,7 +71,7 @@ const ProductDetail: React.FC = () => {
               style={{
                 width: '100%',
                 height: '600px',
-                objectFit: 'cover',
+                objectFit: 'contain',
                 borderRadius: '24px'
               }}
             />
@@ -74,7 +101,7 @@ const ProductDetail: React.FC = () => {
                 style={{
                   width: '80px',
                   height: '80px',
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                   borderRadius: '12px',
                   cursor: 'pointer',
                   border: currentImageIndex === index ? '2px solid #2997ff' : 'none'

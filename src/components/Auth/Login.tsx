@@ -1,16 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    const user = localStorage.getItem('user');
+
+    if (token && user) {
+      // Redirige si l'utilisateur est déjà connecté
+      navigate('/');
+    }
+  }, [navigate]);
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // La logique de la connexion avec la base de donnée
+
+    try {
+      const response = await axios.post(
+        'http://localhost:3000/api/auth/login',
+        {
+          email,
+          password
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept-Language': 'fr_FR' // Change selon besoin
+          }
+        }
+      );
+
+      const data = response.data;
+
+      console.log('Connexion réussie ✅', data);
+
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('accessToken', data.tokens.accessToken);
+      localStorage.setItem('refreshToken', data.tokens.refreshToken);
+
+      // Redirection ou succès UI
+      alert('Connexion réussie !');
+      window.location.href = '/'; // Redirection forcée
+
+    } catch (error: any) {
+      if (error.response) {
+        // Erreur côté serveur
+        console.error('Erreur de l\'API ❌', error.response.data);
+        alert(`Erreur: ${error.response.data.message}`);
+      } else {
+        // Erreur réseau ou autre
+        console.error('Erreur inattendue 🛑', error.message);
+        alert('Une erreur est survenue. Veuillez réessayer.');
+      }
+    }
   };
+
 
   return (
     <Container className="py-5" style={{ marginTop: '6rem' }}>

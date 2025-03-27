@@ -1,21 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Star, MessageSquare } from 'lucide-react';
 import Products from '../Product/Products';
-import { DUMMY_PRODUCTS } from '../../data/dummy-products';
 import { useCart } from '../../context/CartContext';
+import axios from 'axios';
 import '../../styles/Home.css';
+
+interface Product {
+  _id: string;
+  name: string;
+  description?: string;
+  price: number;
+  image: string;
+}
 
 const Home: React.FC = () => {
   const { addItem } = useCart();
+  const [featuredProduct, setFeaturedProduct] = useState<Product | null>(null);
 
-  const macbookProduct = DUMMY_PRODUCTS.find(p => p.name.toLowerCase().includes('macbook pro'));
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/product', {
+          params: {
+            limit: 1
+          },
+          headers: {
+            'Accept-Language': 'fr_FR'
+          }
+        });
+        const product = response.data.products[0]; // assuming response format
+        setFeaturedProduct(product);
+      } catch (error) {
+        console.error("Erreur lors de la récupération du produit vedette :", error);
+      }
+    };
+
+    fetchProduct();
+  }, []);
 
   const handleAddToCart = () => {
-    if (macbookProduct) {
-      addItem(macbookProduct);
+    if (featuredProduct) {
+      addItem(featuredProduct);
     } else {
-      console.error("Produit MacBook Pro non trouvé !");
+      console.error("Aucun produit à ajouter au panier.");
     }
   };
 
@@ -27,25 +55,31 @@ const Home: React.FC = () => {
           <Row className="align-items-center">
             <Col lg={6} className="py-5">
               <h1 className="hero-title">
-                MacBook Pro
+                {featuredProduct ? featuredProduct.name : 'Chargement...'}
                 <br />
-                <span className="hero-highlight">À partir de seulement 1999€</span>
+                {featuredProduct && (
+                  <span className="hero-highlight">À partir de seulement {featuredProduct.price}€</span>
+                )}
               </h1>
               <p className="hero-description">
-                Alliant design raffiné, puissance inégalée et autonomie remarquable, un concentré d'innovation et d'élégance pour sublimer votre quotidien.
+                {featuredProduct
+                  ? featuredProduct.description || 'Un produit exceptionnel à ne pas manquer.'
+                  : 'Chargement de la description...'}
               </p>
               <div className="d-flex gap-3">
-                <Button className="btn-custom" onClick={handleAddToCart}>
+                <Button className="btn-custom" onClick={handleAddToCart} disabled={!featuredProduct}>
                   Acheter dès maintenant
                 </Button>
               </div>
             </Col>
             <Col lg={6} className="py-5">
-              <img
-                src="https://media.istockphoto.com/id/1478610489/fr/photo/hcmc-vietnam-macbook-pro-14-pouces-m2.jpg?s=612x612&w=0&k=20&c=3X3dJ9o8tX3EAPrky4aCuIU6_1YUlh_MipSW0NKz0Do="
-                alt="Hero"
-                className="hero-image"
-              />
+              {featuredProduct && (
+                <img
+                  src={featuredProduct.mainImage}
+                  alt={featuredProduct.name}
+                  className="hero-image"
+                />
+              )}
             </Col>
           </Row>
         </Container>

@@ -1,18 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const Register: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [image, setImage] = useState<File | null>(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    const user = localStorage.getItem('user');
+
+    if (token && user) {
+      // Redirige si l'utilisateur est déjà connecté
+      navigate('/');
+    }
+  }, [navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Logique de création de compte ici (via base de donnée mais pas encore terminé)
+
+    if (!image) {
+      alert('Veuillez sélectionner une image de profil.');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('username', name.toLowerCase().replace(/\s+/g, ''));
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('passwordConfirmation', confirmPassword);
+      formData.append('role', 'user');
+      formData.append('phone', '0100000000');
+      formData.append('address', 'Paris - France');
+      formData.append('companyName', 'Aucune');
+      formData.append('image', image); // ici on envoie l'image sélectionnée
+
+      const response = await axios.post('http://localhost:3000/api/auth/register', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Accept-Language': 'fr_FR'
+        }
+      });
+
+      const data = response.data;
+      console.log('✅ Compte créé avec succès', data);
+
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('accessToken', data.tokens.accessToken);
+      localStorage.setItem('refreshToken', data.tokens.refreshToken);
+
+      alert('Compte créé ! Vérifiez votre email.');
+
+      window.location.href = '/'; // Redirection
+
+    } catch (error: any) {
+      if (error.response) {
+        console.error('Erreur d’API ❌', error.response.data);
+        alert(`Erreur : ${error.response.data.message || 'Inscription échouée.'}`);
+      } else {
+        console.error('Erreur réseau 🛑', error.message);
+        alert('Une erreur est survenue.');
+      }
+    }
   };
+
 
   return (
     <Container className="py-5" style={{ marginTop: '6rem' }}>
@@ -94,6 +155,26 @@ const Register: React.FC = () => {
                       }}
                     />
                   </Form.Group>
+
+                  <Form.Group className="mb-4">
+                    <Form.Label style={{ fontWeight: 500 }}>Image de profil</Form.Label>
+                    <Form.Control
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files.length > 0) {
+                          setImage(e.target.files[0]);
+                        }
+                      }}
+                      className="py-2 px-3"
+                      style={{
+                        backgroundColor: 'white',
+                        border: '1px solid var(--text-secondary)',
+                        borderRadius: '12px'
+                      }}
+                    />
+                  </Form.Group>
+
 
                   <Button
                     type="submit"
