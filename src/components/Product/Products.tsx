@@ -20,6 +20,7 @@ const Products: React.FC = () => {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null); // Ajout de l'état erreur
 
   const categoryMap: Record<string, string> = {
     mac: '67e51158a53000037de20c2b',
@@ -28,53 +29,51 @@ const Products: React.FC = () => {
   };
 
   useEffect(() => {
-    const controller = new AbortController();
-    let isMounted = true;
-
     const fetchProducts = async () => {
       setLoading(true);
-      setProducts([]); // évite l'affichage de l'ancien contenu
+      setError(null); // Reset de l'erreur à chaque changement de page
 
       try {
         const categoryId = categoryMap[path];
-
         const response = await axios.get('http://localhost:3000/api/product', {
           params: categoryId ? { category: categoryId } : {},
           headers: {
             'Accept-Language': 'fr_FR'
-          },
-          signal: controller.signal,
+          }
         });
 
         const allProducts: Product[] = response.data.products || response.data;
-
-        if (isMounted) {
-          setProducts(allProducts);
-        }
-      } catch (error: any) {
-        if (axios.isCancel(error)) {
-          console.log("Requête annulée 🛑");
-        } else {
-          console.error("Erreur de chargement ❌", error);
-          if (isMounted) setProducts([]);
-        }
+        setProducts(allProducts);
+      } catch (err: any) {
+        console.error("Erreur lors du chargement des produits :", err);
+        setError("Une erreur est survenue lors du chargement des produits.");
       } finally {
-        if (isMounted) setLoading(false);
+        setLoading(false);
       }
     };
 
     fetchProducts();
-
-    return () => {
-      controller.abort();
-      isMounted = false;
-    };
   }, [path]);
 
-  if (loading) return <p className="text-center py-5">Chargement des produits...</p>;
+  if (loading) {
+    return <p className="text-center py-5">Chargement des produits...</p>;
+  }
 
   return (
     <Container className="product-grid">
+      {error && (
+        <div style={{
+          backgroundColor: '#fff',
+          border: '1px solid red',
+          color: 'red',
+          padding: '15px',
+          borderRadius: '5px',
+          marginBottom: '20px',
+          textAlign: 'center'
+        }}>
+          {error}
+        </div>
+      )}
       <Row xs={1} md={2} lg={3} className="g-4">
         {products.map((product) => (
           <Col key={product._id}>
