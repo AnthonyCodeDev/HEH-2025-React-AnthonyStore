@@ -44,6 +44,7 @@ const Login: React.FC = () => {
       console.log('Connexion réussie ✅', data);
 
       localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('userImage', data.user.profileImage);
       localStorage.setItem('accessToken', data.tokens.accessToken);
       localStorage.setItem('refreshToken', data.tokens.refreshToken);
 

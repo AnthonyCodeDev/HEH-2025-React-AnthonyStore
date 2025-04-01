@@ -7,19 +7,22 @@ import '../../styles/Header.css';
 
 const Header: React.FC = () => {
   const [user, setUser] = useState<{ name: string; } | null>(null);
+  const [userImage, setUserImage] = useState<string | null>(null); // 👈 image utilisateur
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
+    const storedImage = localStorage.getItem('userImage'); // 👈 récupère l'image
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
+        if (storedImage) setUserImage(storedImage);
       } catch (e) {
         console.error("Erreur parsing user", e);
         setUser(null);
+        setUserImage(null);
       }
     }
   }, []);
-
 
   return (
     <Navbar className="navbar-custom py-3" fixed="top" expand="lg">
@@ -46,12 +49,25 @@ const Header: React.FC = () => {
               <>
                 <span
                   style={{ fontWeight: 500, fontSize: '0.95rem', color: '#fff' }}
-                  className="btn-custom"
+                  className="btn-custom d-flex align-items-center gap-2"
                 >
                   Bonjour,&nbsp;
                   {user.name.length > 16
                     ? `${user.name.substring(0, 16)}...`
                     : user.name}
+                  {userImage && (
+                    <img
+                      src={userImage}
+                      alt="Profil"
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: '50%',
+                        objectFit: 'cover',
+                        border: '1px solid #ccc'
+                      }}
+                    />
+                  )}
                 </span>
                 <Button
                   className="btn-custom"
@@ -62,6 +78,7 @@ const Header: React.FC = () => {
                   onClick={() => {
                     localStorage.clear();
                     setUser(null);
+                    setUserImage(null);
                     window.location.href = '/';
                   }}
                 >
@@ -83,8 +100,6 @@ const Header: React.FC = () => {
               </Link>
             )}
           </div>
-
-
         </Navbar.Collapse>
       </Container>
     </Navbar>

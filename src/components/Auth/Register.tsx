@@ -56,6 +56,7 @@ const Register: React.FC = () => {
       console.log('✅ Compte créé avec succès', data);
 
       localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('userImage', data.user.profileImage);
       localStorage.setItem('accessToken', data.tokens.accessToken);
       localStorage.setItem('refreshToken', data.tokens.refreshToken);
 

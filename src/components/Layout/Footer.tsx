@@ -40,6 +40,11 @@ const Footer: React.FC = () => {
                   AnthonyCode
                 </a>
               </li>
+              <li className="mb-2">
+                <a href="https://anthony.uno" className="text-decoration-none" style={{ color: 'var(--text-secondary)' }}>
+                  AnthonyUno
+                </a>
+              </li>
             </ul>
           </Col>
           <Col md={4}>
