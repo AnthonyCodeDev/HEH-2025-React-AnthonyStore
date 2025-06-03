@@ -10,7 +10,7 @@ interface ProductItemProps {
 
 const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   return (
-    <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+    <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <Card className="product-card border-0 h-100" style={{ backgroundColor: 'var(--secondary-bg)', borderRadius: '20px' }}>
         <div className="p-4">
           <Card.Img

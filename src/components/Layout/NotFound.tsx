@@ -13,14 +13,14 @@ const NotFound: React.FC = () => {
         transition={{ duration: 0.5 }}
       >
         <h1 style={{ fontSize: '8rem', fontWeight: 700, color: 'var(--text-primary)' }}>404</h1>
-        <h2 className="mb-4" style={{ fontSize: '2rem', fontWeight: 600 }}>Page Not Found</h2>
+        <h2 className="mb-4" style={{ fontSize: '2rem', fontWeight: 600 }}>Page introuvable</h2>
         <p className="mb-5" style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
-          The page you're looking for doesn't exist or has been moved.
+          La page que vous cherchez n'existe pas ou a été déplacée.
         </p>
         <Link to="/" style={{ textDecoration: 'none' }}>
           <Button className="btn-custom d-inline-flex align-items-center gap-2" style={{ fontSize: '1rem' }}>
             <Home size={20} />
-            Return Home
+            Retour à l'accueil
           </Button>
         </Link>
       </motion.div>

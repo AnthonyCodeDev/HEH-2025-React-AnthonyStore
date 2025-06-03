@@ -40,8 +40,9 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
       return action.payload;
 
     case 'ADD_ITEM': {
+      const itemId = action.item._id;
       const existingCartItemIndex = state.items.findIndex(
-        (item) => item.id === action.item.id
+        (item) => item._id === itemId
       );
 
       if (existingCartItemIndex > -1) {
@@ -65,17 +66,17 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
     }
 
     case 'REMOVE_ITEM': {
-      const existingItem = state.items.find((item) => item.id === action.id);
+      const existingItem = state.items.find((item) => item._id === action.id);
       if (!existingItem) return state;
 
       return {
-        items: state.items.filter((item) => item.id !== action.id),
+        items: state.items.filter((item) => item._id !== action.id),
         totalAmount: state.totalAmount - existingItem.price * existingItem.quantity,
       };
     }
 
     case 'UPDATE_QUANTITY': {
-      const existingItemIndex = state.items.findIndex((item) => item.id === action.id);
+      const existingItemIndex = state.items.findIndex((item) => item._id === action.id);
       if (existingItemIndex === -1) return state;
 
       const updatedItems = [...state.items];
@@ -84,7 +85,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 
       if (newQuantity <= 0) {
         return {
-          items: updatedItems.filter((item) => item.id !== action.id),
+          items: updatedItems.filter((item) => item._id !== action.id),
           totalAmount: state.totalAmount - item.price * item.quantity,
         };
       }
@@ -106,25 +107,32 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 };
 
 export const CartProvider: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
+  // Permet d'ajouter, retirer, modifier facilement le panier & de calculer le total
   const [cartState, dispatch] = useReducer(cartReducer, {
     items: [],
     totalAmount: 0,
   });
 
-  // Initial load from localStorage
+  // Sauvegarde du panier dans le localStorage pour qu'au F5 on ne perde pas le panier
   useEffect(() => {
     const savedCart = localStorage.getItem(STORAGE_KEY);
     if (savedCart) {
-      const parsed = JSON.parse(savedCart);
-      dispatch({ type: 'SET_CART', payload: parsed });
+      try {
+        const parsed = JSON.parse(savedCart);
+        dispatch({ type: 'SET_CART', payload: parsed });
+      } catch (error) {
+        console.error('Erreur lors du chargement du panier:', error);
+        localStorage.removeItem(STORAGE_KEY);
+      }
     }
   }, []);
 
-  // Save to localStorage on change
+  // Sauvegarde du panier dans le localStorage à chaque modification
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(cartState));
   }, [cartState]);
 
+  // Au clic sur ajouter au panier
   const addItem = useCallback((item: Product) => {
     dispatch({ type: 'ADD_ITEM', item });
   }, []);
@@ -159,3 +167,5 @@ export const useCart = () => {
   }
   return context;
 };
+
+export { cartReducer };

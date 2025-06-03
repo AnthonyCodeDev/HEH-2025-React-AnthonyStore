@@ -84,8 +84,9 @@ const Login: React.FC = () => {
 
                 <Form onSubmit={handleSubmit}>
                   <Form.Group className="mb-4">
-                    <Form.Label style={{ fontWeight: 500 }}>Adresse mail</Form.Label>
+                    <Form.Label htmlFor="login-email" style={{ fontWeight: 500 }}>Adresse mail</Form.Label>
                     <Form.Control
+                      id="login-email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -100,8 +101,9 @@ const Login: React.FC = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-4">
-                    <Form.Label style={{ fontWeight: 500 }}>Mot de passe</Form.Label>
+                    <Form.Label htmlFor="login-password" style={{ fontWeight: 500 }}>Mot de passe</Form.Label>
                     <Form.Control
+                      id="login-password"
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}

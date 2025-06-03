@@ -16,11 +16,11 @@ interface Product {
 
 const Products: React.FC = () => {
   const location = useLocation();
-  const path = location.pathname.slice(1); // 'mac', 'iphone', 'ipad', etc.
+  const path = location.pathname.slice(1);
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null); // Ajout de l'état erreur
+  const [error, setError] = useState<string | null>(null);
 
   const categoryMap: Record<string, string> = {
     mac: '67e51158a53000037de20c2b',
@@ -31,7 +31,7 @@ const Products: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
-      setError(null); // Reset de l'erreur à chaque changement de page
+      setError(null);
 
       try {
         const categoryId = categoryMap[path];

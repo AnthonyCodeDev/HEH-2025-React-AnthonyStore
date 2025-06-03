@@ -11,7 +11,7 @@ interface Product {
   price: number;
   description: string;
   image: string;
-  images?: string[]; // si ton modèle contient un tableau d’images secondaires
+  images?: string[];
 }
 
 const ProductDetail: React.FC = () => {
@@ -34,7 +34,6 @@ const ProductDetail: React.FC = () => {
         const data = response.data.product;
         setProduct(data);
 
-        // Si le produit a un champ `images`, on les combine avec l’image principale
         const images = [data.mainImage];
         if (data.images && Array.isArray(data.images)) {
           images.push(...data.images);

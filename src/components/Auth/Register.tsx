@@ -66,7 +66,7 @@ const Register: React.FC = () => {
 
     } catch (error: any) {
       if (error.response) {
-        console.error('Erreur d’API ❌', error.response.data);
+        console.error('Erreur d\'API ❌', error.response.data);
         alert(`Erreur : ${error.response.data.message || 'Inscription échouée.'}`);
       } else {
         console.error('Erreur réseau 🛑', error.message);
@@ -94,8 +94,9 @@ const Register: React.FC = () => {
 
                 <Form onSubmit={handleSubmit}>
                   <Form.Group className="mb-4">
-                    <Form.Label style={{ fontWeight: 500 }}>Nom</Form.Label>
+                    <Form.Label htmlFor="register-nom" style={{ fontWeight: 500 }}>Nom</Form.Label>
                     <Form.Control
+                      id="register-nom"
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -110,8 +111,9 @@ const Register: React.FC = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-4">
-                    <Form.Label style={{ fontWeight: 500 }}>Adresse mail</Form.Label>
+                    <Form.Label htmlFor="register-email" style={{ fontWeight: 500 }}>Adresse mail</Form.Label>
                     <Form.Control
+                      id="register-email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -126,8 +128,9 @@ const Register: React.FC = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-4">
-                    <Form.Label style={{ fontWeight: 500 }}>Mot de passe</Form.Label>
+                    <Form.Label htmlFor="register-password" style={{ fontWeight: 500 }}>Mot de passe</Form.Label>
                     <Form.Control
+                      id="register-password"
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -142,8 +145,9 @@ const Register: React.FC = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-4">
-                    <Form.Label style={{ fontWeight: 500 }}>Confirmer le mot de passe</Form.Label>
+                    <Form.Label htmlFor="register-confirm-password" style={{ fontWeight: 500 }}>Confirmer le mot de passe</Form.Label>
                     <Form.Control
+                      id="register-confirm-password"
                       type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -158,11 +162,12 @@ const Register: React.FC = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-4">
-                    <Form.Label style={{ fontWeight: 500 }}>Image de profil</Form.Label>
+                    <Form.Label htmlFor="register-image" style={{ fontWeight: 500 }}>Image de profil</Form.Label>
                     <Form.Control
+                      id="register-image"
                       type="file"
                       accept="image/*"
-                      onChange={(e) => {
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         if (e.target.files && e.target.files.length > 0) {
                           setImage(e.target.files[0]);
                         }

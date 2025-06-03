@@ -33,7 +33,7 @@ const Cart: React.FC = () => {
       <Row>
         <Col lg={8}>
           {items.map((item) => (
-            <Card key={item.id} className="mb-4 border-0" style={{ backgroundColor: 'var(--secondary-bg)' }}>
+            <Card key={item._id} className="mb-4 border-0" style={{ backgroundColor: 'var(--secondary-bg)' }}>
               <Card.Body className="p-4">
                 <Row className="align-items-center">
                   <Col sm={3}>
@@ -53,7 +53,7 @@ const Cart: React.FC = () => {
                       <Button
                         variant="link"
                         className="p-0"
-                        onClick={() => updateQuantity(item.id, -1)}
+                        onClick={() => updateQuantity(item._id, -1)}
                       >
                         <MinusCircle size={20} strokeWidth={1.5} />
                       </Button>
@@ -61,7 +61,7 @@ const Cart: React.FC = () => {
                       <Button
                         variant="link"
                         className="p-0"
-                        onClick={() => updateQuantity(item.id, 1)}
+                        onClick={() => updateQuantity(item._id, 1)}
                       >
                         <PlusCircle size={20} strokeWidth={1.5} />
                       </Button>
@@ -71,7 +71,7 @@ const Cart: React.FC = () => {
                     <Button
                       variant="link"
                       className="p-0 text-danger"
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeItem(item._id)}
                     >
                       <Trash2 size={20} strokeWidth={1.5} />
                     </Button>

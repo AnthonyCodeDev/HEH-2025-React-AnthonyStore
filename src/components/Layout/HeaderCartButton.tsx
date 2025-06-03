@@ -10,9 +10,9 @@ const HeaderCartButton: React.FC = () => {
 
   return (
     <Link to="/cart" style={{ textDecoration: 'none' }}>
-      <Button 
+      <Button
         className="btn-custom d-flex align-items-center"
-        style={{ 
+        style={{
           backgroundColor: '#1d1d1f',
           color: 'white',
           padding: '0.5rem 1rem',
@@ -20,7 +20,7 @@ const HeaderCartButton: React.FC = () => {
         }}
       >
         <ShoppingCart size={18} strokeWidth={1.5} className="me-2" />
-        <span className="me-2">Cart</span>
+        <span className="me-2">Panier</span>
         <span className="bg-white text-dark px-2 rounded-pill" style={{ fontSize: '0.8rem' }}>
           {totalItems}
         </span>

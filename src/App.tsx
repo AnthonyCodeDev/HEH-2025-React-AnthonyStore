@@ -20,7 +20,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ScrollToTop from './components/ScrollToTop';
 import './styles/App.css';
 
-// ✅ Routes séparées dans le même fichier
+// Routes séparées dans le même fichier
 const AppRoutes = () => {
   const location = useLocation();
 
@@ -40,7 +40,7 @@ const AppRoutes = () => {
   );
 };
 
-// ✅ Emballage dans Router
+// Emballage dans Router
 const AppContent = () => {
   return (
     <>

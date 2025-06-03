@@ -7,11 +7,11 @@ import '../../styles/Header.css';
 
 const Header: React.FC = () => {
   const [user, setUser] = useState<{ name: string; } | null>(null);
-  const [userImage, setUserImage] = useState<string | null>(null); // 👈 image utilisateur
+  const [userImage, setUserImage] = useState<string | null>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
-    const storedImage = localStorage.getItem('userImage'); // 👈 récupère l'image
+    const storedImage = localStorage.getItem('userImage');
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
