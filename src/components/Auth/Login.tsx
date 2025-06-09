@@ -34,7 +34,7 @@ const Login: React.FC = () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            'Accept-Language': 'fr_FR' // Change selon besoin
+            'Accept-Language': 'fr_FR'
           }
         }
       );

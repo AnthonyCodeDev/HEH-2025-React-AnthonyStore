@@ -30,7 +30,7 @@ const Home: React.FC = () => {
             'Accept-Language': 'fr_FR'
           }
         });
-        const product = response.data.products[0]; // assuming response format
+        const product = response.data.products[0];
         setFeaturedProduct(product);
       } catch (error) {
         console.error("Erreur lors de la récupération du produit vedette :", error);
